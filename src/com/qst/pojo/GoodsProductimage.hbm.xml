@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsProductimage" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_productimage">
+        <id name="gpiId" type="java.lang.Integer">
+            <column name="gpi_id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="gpiPid" optimistic-lock="true" type="int" unique="false">
+            <column name="gpi_pid" not-null="true">
+                <comment>��Ʒid</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpiType" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="gpi_type" not-null="true">
+                <comment>��ƷͼƬ���ͣ��ĸ����ֵ�չʾͼƬ��</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpiUrl" optimistic-lock="true" type="string" unique="false">
+            <column length="255" name="gpi_url" not-null="true">
+                <comment>图片地址</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpiStatus" optimistic-lock="true" type="int" unique="false">
+            <column name="gpi_status" not-null="true">
+                <comment>ͼƬ״̬ 0�¼� 1�ϼ� 2ɾ��</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

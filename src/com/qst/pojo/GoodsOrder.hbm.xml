@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsOrder" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_order">
+        <id name="goId" type="java.lang.Integer">
+            <column name="go_id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="goOrderCode" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="go_orderCode" not-null="true">
+                <comment>������</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goAddress" optimistic-lock="true" type="string" unique="false">
+            <column name="go_address" not-null="true">
+                <comment>�ջ���ַ</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goReceiver" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="go_receiver" not-null="true">
+                <comment>�ջ���</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goPhone" optimistic-lock="true" type="string" unique="false">
+            <column name="go_phone" not-null="true">
+                <comment>�ջ��˵绰</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goTotalPrice" optimistic-lock="true" type="double" unique="false">
+            <column name="go_totalPrice" not-null="true">
+                <comment>订单商品总价</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goCreateDate" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="19" name="go_createDate" not-null="true">
+                <comment>��������ʱ��</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goPayDate" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="19" name="go_payDate">
+                <comment>��������</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goDeliveryDate" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="19" name="go_deliveryDate">
+                <comment>�ջ�ʱ��</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goConfirmDate" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="19" name="go_confirmDate">
+                <comment>ȷ���ջ�ʱ��</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goUid" optimistic-lock="true" type="int" unique="false">
+            <column name="go_uid" not-null="true">
+                <comment>�û�id</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goStatus" optimistic-lock="true" type="int" unique="false">
+            <column name="go_status" not-null="true">
+                <comment>订单状态 0交易关闭 1待付款 2已付款 6交易成功 7删除</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goSid" optimistic-lock="true" type="int" unique="false">
+            <column name="go_sid" not-null="true">
+                <comment>卖家ID</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goSname" optimistic-lock="true" type="string" unique="false">
+            <column name="go_sname" not-null="true">
+                <comment>卖家名称</comment>
+            </column>
+        </property>
+
+        <set name="goodsOrderitemSet" fetch="join" cascade="save-update">
+            <key column="goi_oid"></key>
+            <one-to-many class="com.qst.pojo.GoodsOrderitem"></one-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

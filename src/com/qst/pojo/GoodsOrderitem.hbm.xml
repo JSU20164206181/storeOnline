@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsOrderitem" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_orderitem">
+        <id name="goiId" type="java.lang.Integer">
+            <column name="goi_id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="goiPid" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="goi_pid">
+                <comment>��Ʒid</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiOid" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="goi_oid">
+                <comment>����id</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiUid" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="goi_uid">
+                <comment>�û�id</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiNumber" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="goi_number">
+                <comment>��Ʒ����</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiStatus" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="goi_status">
+                <comment>订单商品状态 0待发货 1已发货（待收货）2已确认收货（待评论）3已评论</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiNote" optimistic-lock="true" type="string" unique="false">
+            <column name="goi_note">
+                <comment>备注</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiSid" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="goi_sid">
+                <comment>卖家id</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiPname" optimistic-lock="true" type="string" unique="false">
+            <column name="goi_pname">
+                <comment>商品名称</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiOrderCode" optimistic-lock="true" type="string" unique="false">
+            <column name="goi_orderCode">
+                <comment>订单号</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="goiPrice" optimistic-lock="true" type="double" unique="false">
+            <column name="goi_price">
+                <comment>商品单价</comment>
+            </column>
+        </property>
+
+        <many-to-one name="goodsProduct" column="goi_pid" insert="false" update="false" unique="true"></many-to-one>
+    </class>
+</hibernate-mapping>

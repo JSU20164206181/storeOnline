@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsReview" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_review">
+        <id name="grId" type="java.lang.Integer">
+            <column name="gr_id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="grContent" optimistic-lock="true" type="string" unique="false">
+            <column name="gr_content" not-null="true">
+                <comment>��������</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="grUid" optimistic-lock="true" type="int" unique="false">
+            <column length="20" name="gr_uid" not-null="true">
+                <comment>�û�����</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="grPid" optimistic-lock="true" type="int" unique="false">
+            <column name="gr_pid" not-null="true">
+                <comment>��Ʒid</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="grCreatTime" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="19" name="gr_creatTime" not-null="true">
+                <comment>���۴���ʱ��</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="grStar" optimistic-lock="true" type="double" unique="false">
+            <column name="gr_star" not-null="true" precision="2" scale="1">
+                <comment>�����Ǽ�</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="grStatus" optimistic-lock="true" type="int" unique="false">
+            <column name="gr_status" not-null="true">
+                <comment>����״̬ 0�¼� 1���� 2ɾ��</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="grGoid" optimistic-lock="true" type="int" unique="false">
+            <column name="gr_goid" not-null="true">
+                <comment>����״̬ 0�¼� 1���� 2ɾ��</comment>
+            </column>
+        </property>
+
+        <set name="goodsCommandImgSet" fetch="join" cascade="delete">
+            <key column="gci_grId"></key>
+            <one-to-many class="com.qst.pojo.GoodsCommandImg"></one-to-many>
+        </set>
+
+       <many-to-one name="goodsUser" column="gr_uid" insert="false" update="false" unique="true"></many-to-one>
+    </class>
+</hibernate-mapping>

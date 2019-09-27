@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+        "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	<!-- 设置字符编码集 -->
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<!--用户操作拦截器定义 -->
+	<package name="Interceptor" extends="json-default"
+		namespace="/">
+		<interceptors>
+			<interceptor name="loginInterceptor"
+				class="com.qst.interceptor.LoginInterceptor" />
+			<interceptor-stack name="myInterceptor">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myInterceptor" />
+		<!--配置全局默认results -->
+		<global-results>
+			<result name="login" type="redirect">/jsp/goods/login.jsp</result>
+		</global-results>
+	</package>
+
+	<!--后台管理员操作拦截器定义 -->
+	<package name="adminInterceptor" extends="struts-default"
+		namespace="/">
+		<interceptors>
+			<interceptor name="adminLoginInterceptor"
+				class="com.qst.interceptor.adminLoginInterceptor" />
+			<interceptor-stack name="myInterceptor1">
+				<interceptor-ref name="adminLoginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myInterceptor1" />
+		<!--配置全局默认results -->
+		<global-results>
+			<result name="login" type="redirect">/jsp/adminLogin.jsp</result>
+		</global-results>
+	</package>
+
+	<!--无需拦截器拦截的action -->
+	<package name="" namespace="/" extends="struts-default">
+
+		<!-- 验证码 -->
+		<action name="validation" class="validateAction">
+			<result name="login" type="stream">
+				<param name="inputName">yzm</param>
+			</result>
+		</action>
+
+		<!-- 判断用户是否存在的action -->
+		<action name="judge" class="userAction" method="judgeUser"></action>
+
+		<!-- ajax判断用户的状态 0禁用 1可用 2 删除 -->
+		<action name="avaliableUser" class="userAction"
+			method="avaliableUser">
+		</action>
+
+		<!-- 注册用户 -->
+		<action name="add" class="userAction" method="addUser">
+			<result name="login">
+				/jsp/goods/login.jsp
+			</result>
+		</action>
+
+
+
+		<!-- 登录 -->
+		<action name="login" class="userAction" method="login">
+
+			<result name="index" type="redirect">
+				jsp/goods/mainGoods.jsp
+			</result>
+			<result name="login" type="redirect">
+				jsp/goods/login.jsp
+			</result>
+		</action>
+
+		<!--获取图片验证码 -->
+		<action name="validateCode"
+			class="com.qst.action.ImageValidate" method="createValidate">
+			<result name="success" type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+
+		<!--后台管理员登录接口 -->
+		<action name="adminLogin" class="adminAction"
+			method="adminLogin">
+			<result name="success" type="redirect">/jsp/admin/admin-index.jsp
+			</result>
+			<result name="error">/jsp/adminLogin.jsp</result>
+		</action>
+
+	</package>
+
+	<!--购物车 -->
+	<package name="shopCar" namespace="/" extends="Interceptor">
+	
+    	<!--增加商品进购物车 -->
+		<action name="addShopCar" class="shopCarAction"
+			method="addShopCar">
+
+		</action>
+
+		<!--用户查询购物车 -->
+		<action name="showShopCar" class="shopCarAction"
+			method="searCh">
+			<result name="success"></result>
+		</action>
+		<!--用户查询购物车 -->
+		<action name="searchShopCar" class="shopCarAction"
+			method="searchShopCar">
+			<result name="success">
+				/jsp/goods/shop-cart.jsp
+			</result>
+		</action>
+
+		<!--用户修改购物车里的商品数量 -->
+		<action name="updateShopCar" class="shopCarAction"
+			method="updateShopCar">
+			<result name="success">
+				/jsp/goods/shop-cart.jsp
+			</result>
+		</action>
+
+		<!--用户删除购物车里的商品 -->
+		<action name="deleteShopCar" class="shopCarAction"
+			method="deleteShopCar">
+			<result name="success">
+				/jsp/goods/shop-cart.jsp
+			</result>
+		</action>
+
+		<!--生成订单 -->
+		<action name="createOrder" class="shopCarAction"
+			method="createOrder">
+			<result name="success">
+				/jsp/goods/confirm-order.jsp
+			</result>
+		</action>
+
+		<!-- 根据ID查询收货地址 -->
+		<action name="searchRaById" class="receiveAddressAction"
+			method="searchRaById">
+			<result name="success"></result>
+		</action>
+
+		<!-- 根据ID修改收货地址 -->
+		<action name="updateRaById" class="receiveAddressAction"
+			method="updateRaById">
+			<result name="success" type="json">
+				<param name="root">ra</param>
+			</result>
+		</action>
+
+		<!--新增收货地址 -->
+		<action name="addRa" class="receiveAddressAction"
+			method="addRa">
+			<result name="success" type="json">
+				<param name="root">ra</param>
+			</result>
+		</action>
+
+		<!--删除收货地址 -->
+		<action name="deleteRaById" class="receiveAddressAction"
+			method="deleteRaById">
+			<result name="success" type="json">
+				<param name="root">id</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- 订单相关action -->
+	<package name="order" namespace="/" extends="Interceptor">
+
+		<!--提交订单 -->
+		<action name="submitOrder" class="orderAction"
+			method="submitOrder">
+			<result name="success" type="redirectAction">
+				pay.action?OcList=${OcList}&amp;totalPrice=${totalPrice}&amp;sId=${sId}
+			</result>
+		</action>
+
+		<!--支付 调用支付宝支付接口 -->
+		<action name="pay" class="aliPayForScAction" method="pay">
+		</action>
+
+		<!--成功支付调用接口 -->
+		<action name="successPay" class="aliPayForScAction"
+			method="successPay">
+			<result name="success">/jsp/goods/payScSuccess.jsp</result>
+		</action>
+
+		<!--查询所有订单 -->
+		<action name="searchAllOrder" class="orderAction"
+			method="searchAllOrder">
+			<result name="success">/jsp/goods/orderList.jsp</result>
+		</action>
+
+		<!--根据订单状态查询订单 -->
+		<action name="searchOrderByStatus" class="orderAction"
+			method="searchOrderByStatus">
+			<result name="success1">/jsp/goods/waitPayOrder.jsp
+			</result>
+			<result name="success2">/jsp/goods/waitSendOrder.jsp
+			</result>
+			<result name="success3">/jsp/goods/waitReceiveOrder.jsp
+			</result>
+			<result name="success4">/jsp/goods/waitCommentOrder.jsp
+			</result>
+		</action>
+
+		<!--删除订单 -->
+		<action name="deleteOrder" class="orderAction"
+			method="deleteOrder">
+			<result name="success0" type="redirectAction">searchAllOrder.action?userId=${userId}
+			</result>
+			<result name="success1" type="redirectAction">searchOrderByStatus.action?userId=${userId}&amp;status=1
+			</result>
+			<result name="success2" type="redirectAction">searchOrderByStatus.action?userId=${userId}&amp;status=2
+			</result>
+			<result name="success3" type="redirectAction">searchOrderByStatus.action?userId=${userId}&amp;status=3
+			</result>
+			<result name="success4" type="redirectAction">searchOrderByStatus.action?userId=${userId}&amp;status=4
+			</result>
+		</action>
+	</package>
+
+	<!-- 商品相关action -->
+	<package name="goods" namespace="/" extends="Interceptor">
+		<!--支付 调用支付宝支付接口 -->
+		<action name="payInfo" class="aliPayAction" method="pay">
+		</action>
+
+		<!--成功支付调用接口 -->
+		<action name="succeedPay" class="aliPayAction"
+			method="successPay">
+			<result name="success">/jsp/goods/paySuccess.jsp</result>
+		</action>
+
+		<!--购买商品 -->
+		<action name="pucharseGoods" class="goodsAction"
+			method="purchaseGoods">
+			<result name="success">/jsp/goods/pucharseGoods.jsp</result>
+			<result name="error"></result>
+		</action>
+
+		<!--确认购买商品 -->
+		<action name="buyGoods" class="goodsAction"
+			method="submitBuyGoods">
+			<result name="success" type="redirectAction">
+				payInfo.action?orderId=${orderId}
+			</result>
+			<result name="error"></result>
+		</action>
+
+		
+
+		<!--查看用户上传的商品 -->
+		<action name="showUserGoods" class="goodsAction"
+			method="findByUserId">
+			<result name="success">/jsp/goods/userGoodsList.jsp</result>
+			<result name="error" type="redirectAction">allGoods.action</result>
+		</action>
+
+
+		<!--增加商品跳转action -->
+		<action name="addGoods" class="goodsAction" method="addGoods">
+			<result name="success">/jsp/goods/addGoods.jsp</result>
+		</action>
+
+		<action name="submitAddGoods" class="goodsAction"
+			method="submitAdd">
+
+			<result name="success" type="redirectAction">showUser.action</result>
+		</action>
+
+		<!--图片上传 -->
+		<action name="uploadImg" class="goodsAction" method="upload">
+
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/jpg </param>
+				<param name="maximumSize">512000</param>
+			</interceptor-ref>
+
+			<interceptor-ref name="defaultStack" />
+		</action>
+	</package>
+
+	<package name="commmand" namespace="/" extends="struts-default">
+		<!--查找评论 -->
+		<action name="searchGoodsCommand" class="commandAction"
+			method="findById">
+			<result name="success"></result>
+		</action>
+	</package>
+
+	<package name="noIntercptor" namespace="/"
+		extends="struts-default">
+		<!--模糊查询 -->
+		<action name="fuzzySearch" class="goodsAction"
+			method="fuzzySearchGoods">
+			<result name="success">/jsp/goods/GoodsList.jsp</result>
+		</action>
+		<!--查看商品 -->
+		<action name="goodsDetail" class="goodsAction"
+			method="goodsDetail">
+			<result name="success">/jsp/goods/goodsDetail.jsp</result>
+			<result name="error" type="redirect">allGoods.action</result>
+		</action>
+		<!--首页 -->
+		<action name="allGoods" class="goodsAction"
+			method="findAllGoodsByPage">
+			<result name="success">/jsp/goods/mainGoods.jsp</result>
+		</action>
+
+		<!--商品分类展示 -->
+		<action name="showTypeGoods" class="goodsAction"
+			method="findByType">
+			<result name="success">/jsp/goods/GoodsList.jsp</result>
+			<result name="error" type="redirect">allGoods.action</result>
+		</action>
+
+
+	</package>
+
+	<!--购物车相关action -->
+	<package name="shopCar2" namespace="/" extends="Interceptor">
+		
+	</package>
+
+
+
+	<!--需要管理员拦截器拦截的action定义 -->
+	<!-- 后台管理 -->
+	<package name="backManager" namespace="/"
+		extends="adminInterceptor">
+
+		<!--后台管理员退出 -->
+		<action name="adminLogOut" class="adminAction"
+			method="adminLogOut">
+			<result name="success" type="redirect">/jsp/adminLogin.jsp</result>
+		</action>
+
+		<!--——————用户管理—————————— -->
+		<!--用户信息列表 -->
+		<action name="userList" class="userManagementAction"
+			method="userList">
+			<result name="success">/jsp/admin/user-list.jsp</result>
+		</action>
+		<!--用户详情 -->
+		<action name="showAUser" class="userManagementAction"
+			method="showUser">
+			<result name="success">/jsp/admin/user-show.jsp</result>
+		</action>
+		<!-- 删除用户 -->
+		<action name="deleteUsers" class="userManagementAction"
+			method="deleteUsers">
+		</action>
+		<!-- 跳转添加用户 -->
+		<action name="toAddUser" class="userManagementAction"
+			method="toAddUser">
+			<result name="success">jsp/admin/user-add.jsp</result>
+		</action>
+		<!-- 添加用户 -->
+		<action name="addUser" class="userManagementAction"
+			method="addUser">
+		</action>
+		<!-- 更新用户 -->
+		<action name="updataAUser" class="userManagementAction"
+			method="updataUser">
+
+		</action>
+		<!-- 用户停用与禁用 -->
+		<action name="stopUser" class="userManagementAction"
+			method="stopUser">
+
+		</action>
+		<!-- 导出用户 -->
+		<action name="importUsers" class="userManagementAction"
+			method="importUsers">
+		</action>
+
+		<!-- 重置密码 -->
+		<action name="rePassword" class="userManagementAction"
+			method="rePassword">
+		</action>
+		<!--用户男女比例 -->
+		<action name="userShowSexCount" class="userManagementAction"
+			method="userShowSexCount">
+			<result name="success">/jsp/admin/user-sexShow.jsp</result>
+		</action>
+		<!--用户年龄分布 -->
+		<action name="userShowAgeCount" class="userManagementAction"
+			method="userShowAgeCount">
+			<result name="success">/jsp/admin/user-ageShow.jsp</result>
+		</action>
+		<!--用户消费记录 -->
+		<action name="userCostCount" class="userManagementAction"
+			method="userCostCount">
+			<result name="success">/jsp/admin/user-costOneShow.jsp</result>
+		</action>
+		<!-- 用户的地图分布 -->
+		<action name="cityShow" class="userAction" method="cityShow">
+
+		</action>
+		<!--——————用户管理—————————— -->
+
+		<!--——————管理员管理—————————— -->
+		<!--管理员信息列表 -->
+		<action name="adminList" class="adminManagementAction"
+			method="adminList">
+			<result name="success">/jsp/admin/admin-list.jsp</result>
+			<result name="false">/jsp/admin/admin-error.jsp</result>
+		</action>
+		<!--管理员个人信息 -->
+		<action name="showAdminInformation"
+			class="adminManagementAction" method="showAdminInformation">
+			<result name="success">/jsp/admin/admin-showMy.jsp</result>
+		</action>
+		<!--跳转管理员修改密码界面 -->
+		<action name="changeAdminPassword"
+			class="adminManagementAction" method="changeAdminPassword">
+			<result name="success">/jsp/admin/admin-password.jsp</result>
+			<result name="success2">/jsp/admin/admin-password2.jsp</result>
+		</action>
+		<!-- 删除管理员 -->
+		<action name="deleteAdmins" class="adminManagementAction"
+			method="deleteAdmins">
+		</action>
+		<!-- 添加管理员 -->
+		<action name="addAdmin" class="adminManagementAction"
+			method="addAdmin">
+		</action>
+		<!-- 更新管理员 -->
+		<action name="updataAdmin" class="adminManagementAction"
+			method="updataAdmin">
+		</action>
+		<!-- 管理员账号验证 -->
+		<action name="adminCheckName" class="adminManagementAction"
+			method="adminCheckName">
+		</action>
+		<!-- 管理员停用与禁用 -->
+		<action name="stopAdmin" class="adminManagementAction"
+			method="stopAdmin">
+		</action>
+		<!-- 管理员提升与降低权限 -->
+		<action name="upAndDownAdmin" class="adminManagementAction"
+			method="upAndDownAdmin">
+		</action>
+		<!-- 导出管理员 -->
+		<action name="importAdmins" class="adminManagementAction"
+			method="importAdmins">
+		</action>
+		<!--——————管理员管理—————————— -->
+
+		<!--——————订单管理—————————— -->
+		<!--订单信息列表 -->
+		<action name="orderListManagement"
+			class="orderManagementAction" method="orderListManagement">
+			<result name="success">/jsp/admin/order-list.jsp</result>
+		</action>
+		<!--用户消费记录 -->
+		<action name="allCostCount" class="orderManagementAction"
+			method=" allCostCount">
+			<result name="success">/jsp/admin/user-costShow.jsp</result>
+		</action>
+		<action name="typeCount" class="orderManagementAction"
+			method="typeCount">
+			<result name="success">/jsp/admin/user-costShow.jsp</result>
+		</action>
+		<!--订单详情 -->
+		<action name="manageShowOrder" class="orderManagementAction"
+			method="manageShowOrder">
+			<result name="success">/jsp/admin/order-show.jsp</result>
+		</action>
+		<!-- 导出订单 -->
+		<action name="importOrder" class="orderManagementAction"
+			method="importOrder">
+		</action>
+		<!--——————订单管理—————————— -->
+	</package>
+
+	<package name="adminProduct" namespace="/"
+		extends="adminInterceptor">
+
+
+		<!--后台管理员查询审核商品列表 -->
+		<action name="findAuditProductList" class="adminProductAction"
+			method="findAuditProductList">
+			<result name="success">/jsp/admin/product-audit.jsp</result>
+		</action>
+
+		<!--后台管理员审核界面模糊搜索商品列表 -->
+		<action name="findAuditProductListByFuzzy"
+			class="adminProductAction" method="findAuditProductListByFuzzy">
+			<result name="success">/jsp/admin/product-audit.jsp</result>
+		</action>
+		<!--后台管理员商品列表界面模糊搜索商品列表 -->
+		<action name="findProductListByFuzzy"
+			class="adminProductAction" method="findProductListByFuzzy">
+			<result name="success">/jsp/admin/productList.jsp</result>
+		</action>
+		<!--后台管理员查询商品列表 -->
+
+		<action name="findProductList" class="adminProductAction"
+			method="findProductList">
+
+			<result name="success">/jsp/admin/productList.jsp</result>
+		</action>
+		<!--后台管理员修改商品状态 -->
+		<action name="updateProductStatus" class="adminProductAction"
+			method="updateProductStatus">
+			<result name="success">/jsp/admin/product-audit.jsp</result>
+
+		</action>
+		<!--后台管理员根据id查询商品 -->
+		<action name="findProductById" class="adminProductAction"
+			method="findProductById">
+			<result name="success">/jsp/admin/productUpdate.jsp</result>
+		</action>
+		<!--后台管理员修改商品 -->
+		<action name="updateProduct" class="adminProductAction"
+			method="updateProduct">
+			<result name="success">/jsp/admin/closeWindow.jsp</result>
+		</action>
+		<!--后台管理员查看商品属性 -->
+		<action name="showProduct" class="adminProductAction"
+			method="showProduct">
+			<result name="success">/jsp/admin/product-show.jsp</result>
+		</action>
+
+		<!--后台管理员查看商品图片库 -->
+		<action name="showProductimageUpdate"
+			class="adminProductAction" method="showProductimageUpdate">
+			<result name="success">/jsp/admin/productimageUpdate.jsp
+			</result>
+		</action>
+		<!--后台管理员商品图片添加界面 -->
+		<action name="showProductimageAdd" class="adminProductAction"
+			method="showProductimageAdd">
+			<result name="success">/jsp/admin/productimage-add.jsp
+			</result>
+		</action>
+
+		<!--后台管理员上传商品图片 -->
+		<action name="uploadProductimage" class="adminProductAction"
+			method="uploadProductimage">
+
+		</action>
+		<!--后台管理员商品图片设置为封面图 -->
+		<action name="setToCover" class="adminProductAction"
+			method="setToCover">
+			<result name="success">/jsp/admin/productimageUpdate.jsp
+			</result>
+		</action>
+		<!--后台管理员商品图片批量删除 -->
+		<action name="deleteProductimage" class="adminProductAction"
+			method="deleteProductimage">
+			<result name="success">/jsp/admin/productimageUpdate.jsp
+			</result>
+		</action>
+
+		<!--后台管理员查询商品图片列表 -->
+		<action name="findProductimageList"
+			class="adminProductimageAction" method="findProductimageList">
+			<result name="success">/jsp/admin/productimage-list.jsp
+			</result>
+		</action>
+		<!--后台管理员模糊查询商品图片列表 -->
+		<action name="findProductimageListByFuzzy"
+			class="adminProductimageAction" method="findProductimageListByFuzzy">
+			<result name="success">/jsp/admin/productimage-list.jsp
+			</result>
+		</action>
+		<!--后台管理员商品图片修改状态 -->
+		<action name="updateProductimageStatus"
+			class="adminProductimageAction" method="updateProductimageStatus">
+			<result name="success">/jsp/admin/productimage-list.jsp
+			</result>
+		</action>
+		<!--后台管理员查询商品图片跳转商品图片修改页面 -->
+		<action name="findProductimageById"
+			class="adminProductimageAction" method="findProductimageById">
+			<result name="success">/jsp/admin/productimageUpdate.jsp
+			</result>
+		</action>
+
+		<!--后台管理员查询所有商品分类 -->
+		<action name="findCategoryList" class="adminCategoryAction"
+			method="findCategoryList">
+			<result name="success">/jsp/admin/product-category.jsp
+			</result>
+		</action>
+		<!--后台管理员模糊查询所有商品分类 -->
+		<action name="findCategoryListByFuzzy"
+			class="adminCategoryAction" method="findCategoryListByFuzzy">
+			<result name="success">/jsp/admin/product-category.jsp
+			</result>
+		</action>
+		<!--后台管理员批量删除商品分类 -->
+		<action name="deleteCategoryList" class="adminCategoryAction"
+			method="deleteCategoryList">
+			<result name="success">/jsp/admin/product-category.jsp
+			</result>
+		</action>
+		<!--后台管理员添加商品分类 -->
+		<action name="addCategory" class="adminCategoryAction"
+			method="addCategory">
+			<result name="success">/jsp/admin/closeWindow.jsp</result>
+		</action>
+		<!--后台管理员查询商品分类跳转分类修改 -->
+		<action name="findCategoryById" class="adminCategoryAction"
+			method="findCategoryById">
+			<result name="success">/jsp/admin/product-category-update.jsp
+			</result>
+		</action>
+		<!--后台管理员修改商品分类 -->
+		<action name="updateCategory" class="adminCategoryAction"
+			method="updateCategory">
+			<result name="success">/jsp/admin/closeWindow.jsp</result>
+		</action>
+		<!--后台管理员修改商品分类 -->
+		<action name="showCategoryAdd" class="adminCategoryAction"
+			method="showCategoryAdd">
+			<result name="success">/jsp/admin/product-category-add.jsp
+			</result>
+		</action>
+
+	</package>
+
+
+
+	<!-- 用户模块 -->
+	<package name="userAction" extends="Interceptor" namespace="/">
+
+		<!--退出登录的action -->
+
+		<action name="logout" class="userAction" method="logout">
+			<result name="login" type="redirect">
+				/jsp/goods/login.jsp
+			</result>
+		</action>
+
+
+		<!-- 显示用户信息 -->
+		<action name="showUser" class="userAction" method="showUser">
+			<result name="show">
+				jsp/goods/showUser.jsp
+			</result>
+		</action>
+
+		<!-- 修改 补全个人信息 -->
+		<action name="updateUser" class="userAction"
+			method="updateUser">
+			<result name="showUser" type="redirectAction">
+				showUser
+			</result>
+		</action>
+
+		<!-- 增加或者修改收货地址 -->
+		<action name="addAddress" class="userAction"
+			method="addAddress">
+			<result name="showUser" type="redirectAction">
+				showUser
+			</result>
+		</action>
+
+		<!-- 删除收货地址 -->
+		<action name="deleteShopAddress" class="userAction"
+			method="deleteShopAddress">
+
+		</action>
+
+		<!-- 删除商品 -->
+		<action name="deleteMyGoods" class="userAction"
+			method="deleteMyGoods">
+
+		</action>
+
+		<!-- 下架商品 -->
+		<action name="changeStatus" class="userAction"
+			method="changeStatus">
+
+		</action>
+
+	</package>
+
+</struts>

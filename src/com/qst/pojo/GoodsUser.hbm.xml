@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" 
+    dynamic-update="false" mutable="true" 
+    name="com.qst.pojo.GoodsUser" 
+    optimistic-lock="version" polymorphism="implicit"
+     select-before-update="false" table="goods_user">
+        
+         <id name="guId" type="int" column="gu_id">
+			<generator class="identity"></generator>
+		</id>
+		<property generated="never" lazy="false" name="guName" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="gu_name" not-null="true">
+                <comment>����Ա����</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="guPassword" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="gu_password" not-null="true">
+                <comment>�û�����</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="guStatus" optimistic-lock="true" type="int" unique="false">
+            <column name="gu_status" not-null="true">
+                <comment>�û�״̬</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="guSex" optimistic-lock="true" type="string" unique="false">
+            <column length="1" name="gu_sex">
+                <comment>�û��Ա�</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="guAge" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="gu_age"> 
+                <comment>�û�����</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="guPhone" optimistic-lock="true" type="string" unique="false">
+            <column name="gu_phone">
+                <comment>�û��绰</comment>
+            </column>
+        </property>
+        
+        <property generated="never" lazy="false" name="guAddress" optimistic-lock="true" type="string" unique="false">
+            <column name="gu_address">
+                <comment>�û���ַ</comment>
+            </column>
+        </property>
+        
+        <property generated="never" lazy="false" name="guEmail" optimistic-lock="true" type="string" unique="false">
+            <column name="gu_email"> 
+                <comment>�û��绰</comment>
+            </column>
+        </property>
+        
+    </class>
+</hibernate-mapping>

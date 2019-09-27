@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+.site-logo {
+	margin-left: 200px;
+}
+
+.navigation-bar li {
+
+}
+
+.goods-page-price, goods-page-total {
+	width: 150px;
+}
+
+.product-quantity {
+	height: 30px;
+	width: 60px;
+	font-size: 20px
+}
+
+.shopping-cart-nullhint {
+	font-size: 20px;
+	text-align: center;
+	background: white;
+	width: 1130px;
+	height: 400px;
+	line-height: 356.04px;
+}
+
+/*商品列表展示*/
+.carousel-inner{
+	height: 550px;
+}
+
+.pi-img-wrapper>img{
+	margin-bottom: 20px;
+	width: 220px;
+	height: 220px;
+}
+
+.product-item>h2>a{
+	text-decoration: none;
+}
+
+.pi-price>s{
+	font-size: 14px;
+	color: #999;
+}

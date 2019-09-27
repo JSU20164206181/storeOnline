@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsProduct" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_product">
+        <id name="gpId" type="java.lang.Integer">
+            <column name="gp_id"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="gpName" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="gp_name" not-null="true">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpIntroduce" optimistic-lock="true" type="string" unique="false">
+            <column name="gp_introduce" not-null="true">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpOriginalPrice" optimistic-lock="true" type="double" unique="false">
+            <column name="gp_originalPrice" not-null="true" precision="10">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpPromotePrice" optimistic-lock="true" type="double" unique="false">
+            <column name="gp_promotePrice" precision="10">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpStock" optimistic-lock="true" type="int" unique="false">
+            <column name="gp_stock" not-null="true">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpCid" optimistic-lock="true" type="int" unique="false">
+            <column name="gp_cid" not-null="true">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpUid" optimistic-lock="true" type="int" unique="false">
+            <column name="gp_uid" not-null="true">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpCreateDate" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="19" name="gp_createDate" not-null="true">
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gpStatus" optimistic-lock="true" type="int" unique="false">
+            <column name="gp_status" not-null="true">
+            </column>
+        </property>
+        <property name="titleImg" column="gp_titleImg" type="string"/>
+
+        <property name="gpStar" column="gp_star" type="double"/>
+
+       <set name="goodsProductimages" fetch="join" cascade="delete">
+           <key column="gpi_pid"></key>
+           <one-to-many class="com.qst.pojo.GoodsProductimage"></one-to-many>
+       </set>
+    </class>
+</hibernate-mapping>

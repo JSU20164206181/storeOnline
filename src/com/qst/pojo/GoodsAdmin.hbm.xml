@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsAdmin" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_admin">
+        
+        <id name="gaId" type="int" column="ga_id">
+			<generator class="identity"></generator>
+		</id>
+		<property generated="never" lazy="false" name="gaName" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="ga_name" not-null="true">
+                <comment>����Ա����</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gaPassword" optimistic-lock="true" type="string" unique="false">
+            <column length="20" name="ga_password" not-null="true">
+                <comment>����Ա����</comment> 
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gaRank" optimistic-lock="true" type="int" unique="false">
+            <column name="ga_rank" not-null="true">
+                <comment>����Ա�ȼ� 1��������Ա 2��ͨ����Ա</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="gaStatus" optimistic-lock="true" type="int" unique="false">
+            <column name="ga_status" not-null="true">
+                <comment>����Ա״̬ 0δ���� 1���� 2ɾ��</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

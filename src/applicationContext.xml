@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
+ http://www.springframework.org/schema/aop 
+ http://www.springframework.org/schema/aop/spring-aop.xsd 
+
+  http://www.springframework.org/schema/util 
+  http://www.springframework.org/schema/util/spring-util-2.5.xsd 
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+   	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.qst" />
+	<!--引入外部配置文件-->
+	<context:property-placeholder location="WEB-INF/classes/db.properties"/>
+	<!--配置数据源 -->
+	<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+				  value="${jdbc.driver}" />
+		<property name="url"
+				  value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<!-- 配置SessionFactory -->
+	<bean id="sessionFactory"
+		  class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+		<!-- 配置hibernate相关参数 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop> 
+				<!-- 开启二级缓存 -->
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<!-- 指定二级缓存驱动类 -->
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+				<!-- 开启查询缓存 -->
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+			    <value>com/qst/pojo/GoodsAdmin.hbm.xml</value>
+			    <value>com/qst/pojo/GoodsCategory.hbm.xml</value>
+				<value>com/qst/pojo/GoodsOrder.hbm.xml</value>
+				<value>com/qst/pojo/GoodsOrderitem.hbm.xml</value>
+				<value>com/qst/pojo/GoodsProduct.hbm.xml</value>
+				<value>com/qst/pojo/GoodsProductimage.hbm.xml</value>
+				<value>com/qst/pojo/GoodsReview.hbm.xml</value>
+				<value>com/qst/pojo/GoodsUser.hbm.xml</value>
+				<value>com/qst/pojo/ShopCar.hbm.xml</value>
+				<value>com/qst/pojo/ReceiveAddress.hbm.xml</value>
+				<value>com/qst/pojo/GoodsCommandImg.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 声明式事务配置 -->
+	<!-- 配置事务管理组件 -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="find*"  read-only="false"/>
+            <tx:method name="save*" read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="within(com.qst.action.*)" />
+	</aop:config>
+
+    <!--改为声明式注解事务 在类上标注 防止使用默认的只读模式导致写入数据失败-->
+    <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
+
+
+
+
+
+    <!-- 用户模块的Action-->
+
+
+
+
+
+	<!-- 验证码的action的类 -->
+    <bean id="validateAction" class="com.qst.action.ValidateAction"></bean>
+
+
+</beans>
+
+
+
+
+
+
+
+
+

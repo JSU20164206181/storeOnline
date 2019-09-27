@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class catalog="goods" dynamic-insert="false"
+		dynamic-update="false" mutable="true"
+		name="com.qst.pojo.ReceiveAddress" optimistic-lock="version"
+		polymorphism="implicit" select-before-update="false"
+		table="goods_receiveAddress">
+		<id name="graId" type="java.lang.Integer" column="gra_id">
+			<generator class="identity" />
+		</id>
+		<property name="graUid" type="int" column="gra_uid" />
+		<property name="graProvince" type="string"
+			column="gra_province" />
+		<property name="graCity" type="string" column="gra_city" />
+		<property name="graDistrict" type="string" column="gra_district" />
+		<property name="graStreet" type="string" column="gra_street" />
+		<property name="graName" type="string" column="gra_name" />
+		<property name="graPhone" type="string" column="gra_phone" />
+	</class>
+</hibernate-mapping>

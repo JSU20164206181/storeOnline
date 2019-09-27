@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2019-8-6 21:46:28 by Hibernate Tools 5.2.3.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="goods" dynamic-insert="false" dynamic-update="false" mutable="true" name="com.qst.pojo.GoodsCommandImg" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="goods_commandImg">
+          <id name="gciId" column="gci_id" type="int">
+              <generator class="identity"></generator>
+          </id>
+
+         <property name="gciCId" type="int" column="gci_grId"></property>
+
+         <property name="url" type="string" column="gci_url"></property>
+    </class>
+</hibernate-mapping>
